@@ -1,6 +1,4 @@
-﻿[![sites](qitas/Qi.png)](http://www.qitas.cn)
-
-# FPGA
+﻿# FPGA
 
 ### 项目描述
 
@@ -13,13 +11,12 @@ FPGA（Field－Programmable Gate Array），即现场可编程门阵列
 
 ## 组成
 
+####  sheet
 
-
----
-## 说明
-
-2018-10-15: 创建该仓库
+包括一些选型手册
 
 ---
+
 ## 为锻造最美之器
+
 [![sites](qitas/qitas.png)](http://www.qitas.cn)
