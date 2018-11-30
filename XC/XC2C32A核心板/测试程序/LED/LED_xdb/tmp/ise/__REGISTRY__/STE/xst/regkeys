@@ -1,0 +1,6 @@
+CommandLine
+C:\Xilinx\10.1\ISE\bin\nt\unwrapped\xst.exe -ise E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/LED.ise -intstyle ise -ifn E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/Main.xst -ofn E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/Main.syr -finalclean 1
+s
+FormatString
+xst [-ifn <InputFile>] [-ofn <OutputFile>] [-ise <iseProjectFile>] [--quiet] [-intstyle <Style>] [--deb <DebugLevel>] [--finalclean <Clean>] [--PcubeFlow] [--globOptFlow] [--XstNtrc]
+s

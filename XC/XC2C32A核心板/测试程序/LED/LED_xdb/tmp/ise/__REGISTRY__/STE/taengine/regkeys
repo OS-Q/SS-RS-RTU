@@ -1,0 +1,6 @@
+CommandLine
+taengine -ise E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/LED.ise
+s
+FormatString
+taengine 
+s

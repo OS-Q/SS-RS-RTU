@@ -1,0 +1,7 @@
+xst -ise "E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/LED.ise" -intstyle ise -ifn "E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/Main.xst" -ofn "E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/Main.syr"
+ngdbuild -ise "E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/LED.ise" -intstyle ise -dd _ngo  -i -p xc2c32a-VQ44-6 "Main.ngc" Main.ngd
+cpldfit -ise "E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/LED.ise" -intstyle ise -p xc2c32a-6-VQ44 -ofmt vhdl -optimize density -htmlrpt -loc on -slew fast -init low -inputs 32 -inreg on -blkfanin 38 -pterms 28 -unused keeper -terminate keeper -iostd LVCMOS18 Main.ngd
+XSLTProcess -ise "E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/LED.ise" Main_build.xml
+tsim -ise "E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/LED.ise" -intstyle ise Main Main.nga
+taengine -ise "E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/LED.ise" -intstyle ise -f Main -w --format html1 -l E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/Main_html/tim/timing_report.htm
+hprep6 -ise "E:/Lcsoft/Hardware/CPLD/XC2C32A/LED/LED.ise" -s IEEE1149 -i Main
