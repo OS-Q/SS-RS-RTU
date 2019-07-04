@@ -63,6 +63,17 @@ function make_freeCAD()
 	fi	
 }
 
+function config_freeCAD()
+{
+	if [ -d $WorkPath/freeCAD-source ]; then	
+		cd $WorkPath/freeCAD-source 
+		mkdir build
+		cd build
+		cmake -DBUILD_QT5=ON -DPYTHON_EXECUTABLE=/usr/bin/python3 ..
+		make -j$(nproc)
+	fi	
+}
+
 OPTION=$(whiptail --title "freeCAD config system" \
 	--menu "$MENUSTR" 20 60 12 --cancel-button Finish --ok-button Select \
 	"0"   "AUTO all" \
@@ -93,8 +104,8 @@ elif [ $OPTION = '2' ]; then
 	exit 0
 elif [ $OPTION = '3' ]; then
 	clear
-	echo -e "config\n${Line}"
-	
+	echo -e "config with new\n${Line}"
+	config_freeCAD
 	exit 0	
 else
 	whiptail --title "freeCAD config system" \
