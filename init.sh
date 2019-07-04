@@ -47,29 +47,7 @@ function set_freeCAD()
 	if [ ! -d $WorkPath/freeCAD-source ]; then	
 		cd $WorkPath
 		git clone  --depth=1 https://github.com/FreeCAD/FreeCAD.git freeCAD-source
-	fi
-	if [ -d $SDKPath/ESP8266_NONOS_V3 ]; then		
-		echo 'export IDF_PATH='$SDKPath'/ESP8266_NONOS_V3' >> ~/.bashrc
-		source  ~/.bashrc
-		echo -e "done ESP8266_NONOS_SDK path !\n${Line}"   	
-	else
-		echo -e "exist ESP8266_NONOS_SDK NULL folder \n${Line}"
 	fi	
-}
-
-function set_freeCAD()
-{
-	if [ ${#ret} -lt ${#str} ]; then
-		if [ -f  $WorkPath/scripts/xtensa-freeCAD32.sh ]; then
-			chmod +x $WorkPath/scripts/xtensa-freeCAD32.sh
-			$WorkPath/scripts/xtensa-freeCAD32.sh 
-			source  ~/.bashrc
-		else
-			echo -e "no shell xtensa-freeCAD32.sh \n${Line}"
-		fi
-	else
-		echo -e "have config xtensa-freeCAD32 gcc\n${Line}"
-	fi
 }
 
 
@@ -87,17 +65,23 @@ if [ $OPTION = '0' ]; then
 	clear
 	echo -e "AUTO \n${Line}"
 	apt_install	
-	
+	set_freeCAD
 	exit 0
 elif [ $OPTION = '1' ]; then
 	clear
 	echo -e "prepare\n${Line}"
 	apt_install
+	set_freeCAD
 	exit 0
 elif [ $OPTION = '2' ]; then
 	clear
 	echo -e "make\n${Line}"
-	
+	if [ -d $WorkPath/freeCAD-source ]; then	
+		cd $WorkPath/freeCAD-source 
+		git pull
+		cmake .
+		make -j$(nproc)
+	fi
 	exit 0
 elif [ $OPTION = '3' ]; then
 	clear
