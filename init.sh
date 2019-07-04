@@ -29,7 +29,10 @@ echo $PASSWD | sudo ls &> /dev/null 2>&1
 
 function apt_install()
 {
+	sudo apt-get -y build-dep freecad-daily
+	sudo apt-get install -y freecad-daily
 	sudo apt build-dep freecad -y 
+	sudo add-apt-repository -y  --enable-source ppa:freecad-maintainers/freecad-daily && sudo apt-get update -y 
 	sudo apt install -y libocct*-dev # For the official version
 	sudo apt install -y liboce*-dev # For the community edition
 	sudo apt install -y build-essential libtool cmake debhelper dh-exec dh-python libboost-date-time-dev libboost-dev libboost-filesystem-dev libboost-graph-dev 
@@ -50,6 +53,15 @@ function set_freeCAD()
 	fi	
 }
 
+function make_freeCAD()
+{
+	if [ -d $WorkPath/freeCAD-source ]; then	
+		cd $WorkPath/freeCAD-source 
+		git pull
+		cmake .
+		make -j$(nproc)
+	fi	
+}
 
 OPTION=$(whiptail --title "freeCAD config system" \
 	--menu "$MENUSTR" 20 60 12 --cancel-button Finish --ok-button Select \
@@ -66,6 +78,7 @@ if [ $OPTION = '0' ]; then
 	echo -e "AUTO \n${Line}"
 	apt_install	
 	set_freeCAD
+	make_freeCAD
 	exit 0
 elif [ $OPTION = '1' ]; then
 	clear
@@ -76,12 +89,7 @@ elif [ $OPTION = '1' ]; then
 elif [ $OPTION = '2' ]; then
 	clear
 	echo -e "make\n${Line}"
-	if [ -d $WorkPath/freeCAD-source ]; then	
-		cd $WorkPath/freeCAD-source 
-		git pull
-		cmake .
-		make -j$(nproc)
-	fi
+	make_freeCAD
 	exit 0
 elif [ $OPTION = '3' ]; then
 	clear
