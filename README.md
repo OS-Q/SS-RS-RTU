@@ -1,12 +1,11 @@
-# [CAD构建](https://github.com/qitas/CAD) 
-#### qitas@qitas.cn
-#### 归属[mAIn()智慧构建体系](https://github.com/qitas/mAIn) 
-## [工程描述](https://github.com/qitas/CAD/wiki) 
+﻿# [FreeCAD](https://github.com/OS-Q/S06)
 
-[freeCAD](https://github.com/FreeCAD/FreeCAD) 是正在成长的开源CAD软件，在某种程度上已经完善到值得我们研究学习并在尝试使用，方便定制化开发，维护个人或公司软资产。
+[![sites](http://182.61.61.133/link/resources/OSQ.png)](http://www.OS-Q.com)
+### [简介](https://github.com/OS-Q/S06/wiki)
 
-本工程通过自动化脚步配置linux下freeCAD软件安装部署
+[FreeCAD](https://www.freecadweb.org/) 是一个基于OpenCASCADE的开源CAD/CAE工具。OpenCASCADE是一套开源的CAD/CAM/CAE几何模型核心，来自法国Matra Datavision公司,是著名的CAD软件EUCLID的开发平台。
+
+[FreeCAD](https://github.com/FreeCAD/FreeCAD) 用 Coin 3D 提供的与 Open Inventor 兼容的三维场景模型，为您提供丰富的 Python API 接口，并且还拥有原生的简体中文，开放的源码可以让您尽情使用脚本语言和扩充功能。
 
 
-[![sites](qitas/qitas.png)](http://www.qitas.cn)
-## 锻造最美之器
+### [OS-Q = Open Source & Operating System ](http://www.OS-Q.com)
