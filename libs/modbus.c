@@ -1,4 +1,5 @@
 #include "modbus.h"
+#include <stdio.h>
 #include <stdarg.h>
 
 /** 配置ModBus实例 **/
@@ -44,7 +45,7 @@ void ModBus_setup( ModBus_parameter* ModBus_para, ModBus_Setting_T setting)
 	ModBus_para->m_SendHandler = setting.sendHandler;
 
 #ifdef MODBUS_MASTER // 主机
-	
+
 #endif
 
 #ifdef MODBUS_SLAVE // 从机
@@ -275,8 +276,8 @@ void ModBus_readByteFromOuter(ModBus_parameter* ModBus_para, byte receivedByte)
 	printf("address %02x read byte: %02x\n", ModBus_para->m_address, receivedByte);
 #endif // _UNIT_TEST
 
-	/*** 此函数 内部 不可更改 ModBus_para->m_pBeginReceiveBufferTmp 值!!!!!!!!!!!!!
-	**** 此函数 外部 不可更改 ModBus_para->m_pEndReceiveBufferTmp 值!!!!!!!!!!!!!!!
+	/*** 此函数 内部 不可更改 ModBus_para->m_pBeginReceiveBufferTmp 值
+	**** 此函数 外部 不可更改 ModBus_para->m_pEndReceiveBufferTmp 值
 	**** 避免内存写冲突, 保证数据完整性***/
 	*ModBus_para->m_pEndReceiveBufferTmp = receivedByte;
 	if (ModBus_para->m_pEndReceiveBufferTmp >= ModBus_para->m_receiveBufferTmp + MODBUS_BUFFER_SIZE - 1)
@@ -486,7 +487,7 @@ static byte ModBus_detectFrame(ModBus_parameter* ModBus_para, size_t* restSize)
 		if (!CheckCRC16(ModBus_para->m_receiveFrameBuffer, ModBus_para->m_receiveFrameBufferLen)) // 如果校验不通过
 		{
 			if (frameSize > 0 && frameSize < ModBus_para->m_receiveFrameBufferLen)  // 如果数据长度比m_responseFrameLen长, 则尝试以m_responseFrameLen长度接收
-			{	
+			{
 				if (!CheckCRC16(ModBus_para->m_receiveFrameBuffer, frameSize)) // 如果校验不通过, 不为超时或缓冲区满则返回继续接收
 				{
 					if (isTimeout || ModBus_para->m_receiveFrameBufferLen >= MODBUS_BUFFER_SIZE)
@@ -831,7 +832,7 @@ static void sendFrame_loop(ModBus_parameter* ModBus_para)
 				break;
 			}
 		}
-			
+
 		memcpy(ModBus_para->m_sendFrames, ModBus_para->m_sendFrames + 1, (--ModBus_para->m_sendFramesN) * sizeof(MODBUS_FRAME_T)); // 移除已发送数据包
 		ModBus_para->m_waitingResponse = 0;
 	}
@@ -1097,7 +1098,8 @@ void ModBus_Slave_loop(ModBus_parameter* ModBus_para)
 #ifdef _UNIT_TEST
 #include <string.h>
 #include <stdio.h>
-#include <windows.h>
+//#include <windows.h>
+
 ModBus_parameter modBus_master_test, modBus_slave_test;
 int t = 0;
 static int millis()

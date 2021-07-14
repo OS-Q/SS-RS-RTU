@@ -21,40 +21,44 @@
 
 // 使用主机/从机协议, 可同时使用
 #define MODBUS_MASTER
-//#define MODBUS_SLAVE
-
+#define MODBUS_SLAVE
 #define _UNIT_TEST
 //#define DEBUG
 //#define _DELAY_DEBUG
 
 #ifdef _UNIT_TEST
 
-#ifndef MODBUS_MASTER
-#define MODBUS_MASTER
-#endif // !MODBUS_MASTER
 
-#ifndef MODBUS_SLAVE
-#define MODBUS_SLAVE
-#endif // !MODBUS_SLAVE
+// TODO: 获取毫秒系统时间的函数, 根据具体系统进行定义
+int millis();
 
 #endif // _UNIT_TEST
+
+#ifdef MODBUS_MASTER
+
+#endif
+
+
+#ifdef MODBUS_SLAVE
+
+#endif
 
 #ifdef DEBUG
 #define MODBUS_DEBUG(x) print_controlled x
 #else
-#define MODBUS_DEBUG(x)  
+#define MODBUS_DEBUG(x)
 #endif // DEBUG
 
 #ifdef _DELAY_DEBUG
 #define MODBUS_DELAY_DEBUG(x) print_controlled x
 #else
-#define MODBUS_DELAY_DEBUG(x)  
+#define MODBUS_DELAY_DEBUG(x)
 #endif // DEBUG
 
-#define MODBUS_REGISTER_LIMIT 6 // 一次最多读写寄存器个数
-#define MODBUS_BUFFER_SIZE ((MODBUS_REGISTER_LIMIT)*4+20) // 数据包最大长度(写多个寄存器的数据包长度)
-#define MODBUS_WAITFRAME_N 5  // 指令缓存最大个数
-#define MODBUS_DEFAULT_BAUD 9600 // 默认数据收发速率, 9600bps
+#define MODBUS_REGISTER_LIMIT 	6 // 一次最多读写寄存器个数
+#define MODBUS_BUFFER_SIZE 		((MODBUS_REGISTER_LIMIT)*4+20) // 数据包最大长度(写多个寄存器的数据包长度)
+#define MODBUS_WAITFRAME_N 		5  // 指令缓存最大个数
+#define MODBUS_DEFAULT_BAUD 	9600 // 默认数据收发速率, 9600bps
 
 #include <assert.h>
 #include <stdint.h>
@@ -63,8 +67,6 @@ typedef unsigned char byte;
 typedef unsigned char u8;
 typedef unsigned int u32;
 
-// TODO: 获取毫秒系统时间的函数, 根据具体系统进行定义
-int millis();
 
 typedef enum {
 	ASCII,
