@@ -1,7 +1,0 @@
-{
-    "name":"FreeCAD",
-    "type":"EDA",
-    "base":"*",
-    "url":"https://github.com/OS-Q/S06",
-    "version":"1.0.0"
-}
