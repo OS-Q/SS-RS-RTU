@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32G030xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc; ../Drivers/STM32G0xx_HAL_Driver/Inc; ../Drivers/STM32G0xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32G0xx/Include; ../Drivers/CMSIS/Include; ..\..\..\libs</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32G0xx_HAL_Driver/Inc;../Drivers/STM32G0xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32G0xx/Include;../Drivers/CMSIS/Include;..\..\..\libs\HAL</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -534,9 +534,19 @@
           <GroupName>Modbus</GroupName>
           <Files>
             <File>
-              <FileName>modbus.c</FileName>
+              <FileName>Modbus.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\libs\modbus.c</FilePath>
+              <FilePath>..\..\..\libs\HAL\Modbus.c</FilePath>
+            </File>
+            <File>
+              <FileName>ModbusPort.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\libs\HAL\ModbusPort.c</FilePath>
+            </File>
+            <File>
+              <FileName>RegConstant.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\libs\HAL\RegConstant.c</FilePath>
             </File>
           </Files>
         </Group>

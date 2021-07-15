@@ -49,8 +49,10 @@ void MX_USART1_UART_Init(void)
   huart1.Init.OverSampling = UART_OVERSAMPLING_16;
   huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
   huart1.Init.ClockPrescaler = UART_PRESCALER_DIV1;
-  huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  if (HAL_UART_Init(&huart1) != HAL_OK)
+  huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_AUTOBAUDRATE_INIT;
+  huart1.AdvancedInit.AutoBaudRateEnable = UART_ADVFEATURE_AUTOBAUDRATE_ENABLE;
+  huart1.AdvancedInit.AutoBaudRateMode = UART_ADVFEATURE_AUTOBAUDRATE_ONSTARTBIT;
+  if (HAL_RS485Ex_Init(&huart1, UART_DE_POLARITY_HIGH, 0, 0) != HAL_OK)
   {
     Error_Handler();
   }
@@ -120,8 +122,9 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     /**USART1 GPIO Configuration
     PA9     ------> USART1_TX
     PA10     ------> USART1_RX
+    PA12 [PA10]     ------> USART1_DE
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_9|GPIO_PIN_10;
+    GPIO_InitStruct.Pin = GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_12;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -178,8 +181,9 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
     /**USART1 GPIO Configuration
     PA9     ------> USART1_TX
     PA10     ------> USART1_RX
+    PA12 [PA10]     ------> USART1_DE
     */
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9|GPIO_PIN_10);
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_12);
 
     /* USART1 interrupt Deinit */
     HAL_NVIC_DisableIRQ(USART1_IRQn);
