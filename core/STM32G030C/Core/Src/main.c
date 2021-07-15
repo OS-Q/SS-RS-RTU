@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include "modbus.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -69,7 +70,33 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+uint8_t regs[40];
+volatile uint32_t g_ticks;
+void mbsendHandler(byte* arr, size_t len)
+{
+    HAL_UART_Transmit(&huart1, arr, len, 1000);
+}
 
+size_t GetRegisterHandler(uint16_t addr, uint16_t len, uint16_t* arr)
+{
+    for(u8 i=0; i<len; i++){
+        arr[i]=regs[addr+i];
+    }
+}
+size_t SetRegisterHandler(uint16_t addr, uint16_t len, uint16_t* arr)
+{
+    for(u8 i=0; i<len; i++){
+        regs[addr+i]=arr[i];
+    }
+}
+volatile byte RxData;
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if(&huart1 == huart) {
+    ModBus_readByteFromOuter(&qitas, RxData);
+    HAL_UART_Receive_IT(huart, &RxData, 1);
+  }
+}
 /* USER CODE END 0 */
 
 /**
@@ -79,7 +106,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+    ModBus_Setting_T setting;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -103,8 +130,17 @@ int main(void)
   MX_TIM1_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_Base_Start_IT(&htim3);
+  HAL_UART_Receive_IT(&huart1, &RxData, 1);
+  setting.address=1;
+  setting.frameType=RTU;
+  setting.baudRate=115200;
+  setting.sendHandler=&mbsendHandler;
+  // ModBus_setTimeout(&qitas, 5, 5);
+  ModBus_attachRegisterHandler(&qitas,&GetRegisterHandler,&SetRegisterHandler);
+  ModBus_setup(&qitas,setting);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -114,8 +150,13 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    // ModBus_Master_loop(&qitas);
+    // unit_test();
+    ModBus_Slave_loop(&qitas);
+    // ModBus_setRegister(&qitas, 1, 12, &mbsendHandler);
+    // if(g_ticks%1000==0)
     HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-    printf("test\n ");
+    // printf("test\n ");
     HAL_Delay(500);
   }
   /* USER CODE END 3 */
@@ -172,7 +213,13 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    if(htim==(&htim3))  //1ms
+    {
+      g_ticks++;
+    }
+}
 /* USER CODE END 4 */
 
 /**

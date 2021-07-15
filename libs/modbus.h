@@ -30,7 +30,7 @@
 
 
 // TODO: 获取毫秒系统时间的函数, 根据具体系统进行定义
-int millis();
+int millis(void);
 
 #endif // _UNIT_TEST
 
@@ -55,10 +55,10 @@ int millis();
 #define MODBUS_DELAY_DEBUG(x)
 #endif // DEBUG
 
-#define MODBUS_REGISTER_LIMIT 	6 // 一次最多读写寄存器个数
-#define MODBUS_BUFFER_SIZE 		((MODBUS_REGISTER_LIMIT)*4+20) // 数据包最大长度(写多个寄存器的数据包长度)
-#define MODBUS_WAITFRAME_N 		5  // 指令缓存最大个数
-#define MODBUS_DEFAULT_BAUD 	9600 // 默认数据收发速率, 9600bps
+#define MODBUS_REGISTER_LIMIT   6       // 一次最多读写寄存器个数
+#define MODBUS_BUFFER_SIZE 	    ((MODBUS_REGISTER_LIMIT)*4+20) // 数据包最大长度(写多个寄存器的数据包长度)
+#define MODBUS_WAITFRAME_N 	    5       // 指令缓存最大个数
+#define MODBUS_DEFAULT_BAUD     9600    // 默认数据收发速率, 9600bps
 
 #include <assert.h>
 #include <stdint.h>
@@ -79,24 +79,24 @@ typedef enum {
 	WRITE_MULTI_REGISTER = 0x10,
 } MODBUS_FUNCTION_TYPE;
 
-typedef struct _MODBUS_SETTING_T { // ModBus实例配置信息类型
-	uint8_t address; // 目标设备地址
-	MODBUS_MODE_TYPE frameType; // 工作模式, 包括 ASCII和RTU
-	u32 baudRate; // 数据速率, 比如9600或115200等
-	u8 register_access_limit; // 一次最多读/写寄存器个数
-	void(*sendHandler)(byte*, size_t); // 用于发送数据的函数, 函数参数(byte* data, size_t size)数据首地址和数据字节数
+typedef struct _MODBUS_SETTING_T { 		// ModBus实例配置信息类型
+	uint8_t address; 					// 目标设备地址
+	MODBUS_MODE_TYPE frameType; 		// 工作模式, 包括 ASCII和RTU
+	u32 baudRate; 						// 数据速率, 比如9600或115200等
+	u8 register_access_limit; 			// 一次最多读/写寄存器个数
+	void(*sendHandler)(byte*, size_t); 	// 用于发送数据的函数, 函数参数(byte* data, size_t size)数据首地址和数据字节数
 } ModBus_Setting_T;
 
 typedef struct _MODBUS_FRAME_T {
-	u8 index; // 指令序号
+	u8 index; 					// 指令序号
 	byte data[MODBUS_BUFFER_SIZE + 2]; // 数据, 多分配两字节保证安全
-	u8 size; // 数据长度
-	MODBUS_FUNCTION_TYPE type; // 指令类型
-	u32 time; // 指令开始时间
-	void* responseHandler; // 指令执行结束回调函数指针
-	u8 responseSize; // 返回帧长度
-	uint16_t address; // 访问寄存器的地址
-	u8 count; // 访问寄存器的个数
+	u8 size; 					// 数据长度
+	MODBUS_FUNCTION_TYPE type; 	// 指令类型
+	u32 time; 					// 指令开始时间
+	void* responseHandler; 		// 指令执行结束回调函数指针
+	u8 responseSize; 			// 返回帧长度
+	uint16_t address; 			// 访问寄存器的地址
+	u8 count; 					// 访问寄存器的个数
 } MODBUS_FRAME_T;
 
 typedef void(*GetReponseHandler_T)(uint16_t*, uint16_t); // 读取寄存器回调函数指针类型, 回到函数参数(寄存器值缓冲区首地址, 寄存器个数)
@@ -118,20 +118,20 @@ typedef struct __MODBUS_Parameter {
 	u8 m_registerAcessLimit;
 
 	volatile u32 m_lastReceivedTime; // 最近一次接受到字节数据的时刻
-	u32 m_lastSentTime; // 最近一次发送数据的时刻
-	u32 m_receiveTimeout; // 设定的接收等待下一字符超时时间
-	u32 m_sendTimeout; // 设定等待返回帧超时时间
+	u32 m_lastSentTime;     // 最近一次发送数据的时刻
+	u32 m_receiveTimeout;   // 设定的接收等待下一字符超时时间
+	u32 m_sendTimeout;      // 设定等待返回帧超时时间
 
 	byte m_faston; // 是否开启快速模式
 
 	void(*m_SendHandler)(byte*, size_t); // 发送数据函数, 用于向外部设备传递数据
 
-#ifdef MODBUS_MASTER // 主机
+// #ifdef MODBUS_MASTER // 主机
 	MODBUS_FRAME_T m_sendFrames[MODBUS_WAITFRAME_N + 2]; // 发送数据包队列
-	size_t m_sendFramesN; // 发送数据包队列长度
-	u8 m_nextFrameIndex; // 下一数据包序号
+	size_t m_sendFramesN;   // 发送数据包队列长度
+	u8 m_nextFrameIndex;    // 下一数据包序号
 	byte m_waitingResponse; // 正在等待返回帧
-#endif // MODBUS_MASTER
+// #endif // MODBUS_MASTER
 
 #ifdef MODBUS_SLAVE // 从机
 	byte m_sendFrameBuffer[MODBUS_BUFFER_SIZE];
@@ -140,9 +140,9 @@ typedef struct __MODBUS_Parameter {
 	size_t(*m_GetRegisterHandler)(uint16_t, uint16_t, uint16_t*); // 读取寄存器函数, 函数参数(寄存器首地址, 寄存器个数, 读出的数据), 返回成功读取的个数
 	size_t(*m_SetRegisterHandler)(uint16_t, uint16_t, uint16_t*); // 设置寄存器函数, 函数参数(寄存器地址, 写入个数, 写入数据), 返回成功设置的个数
 #endif // MODBUS_SLAVE
-
-
 } ModBus_parameter;
+
+extern ModBus_parameter qitas;
 
 /************ 对外接口 BEGIN ***********/
 void ModBus_setup(ModBus_parameter* ModBus_para, ModBus_Setting_T setting); // 配置ModBus实例

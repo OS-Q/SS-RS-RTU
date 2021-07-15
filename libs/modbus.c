@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 
+ModBus_parameter qitas;
+
 /** 配置ModBus实例 **/
 /*** 参数 ***
 ** address: 设备地址
@@ -1099,12 +1101,12 @@ void ModBus_Slave_loop(ModBus_parameter* ModBus_para)
 #include <string.h>
 #include <stdio.h>
 //#include <windows.h>
-
+#include "main.h"
 ModBus_parameter modBus_master_test, modBus_slave_test;
 int t = 0;
-static int millis()
+static int millis(void)
 {
-	return t;
+	return g_ticks;
 }
 
 static void OutputData_master(byte* data, size_t len)
@@ -1216,7 +1218,7 @@ void unit_test()
 	ModBus_Setting_T modbusSetting;
 	modbusSetting.address = 0x01;
 	modbusSetting.baudRate = 9600;
-	modbusSetting.frameType = ASCII;
+	modbusSetting.frameType = RTU;
 	modbusSetting.register_access_limit = 5;
 	modbusSetting.sendHandler = OutputData_master;
 	ModBus_setup(&modBus_master_test, modbusSetting);
@@ -1225,7 +1227,7 @@ void unit_test()
 	// 从机配置
 	modbusSetting.address = 0x01;
 	modbusSetting.baudRate = 9600;
-	modbusSetting.frameType = ASCII;
+	modbusSetting.frameType = RTU;
 	modbusSetting.register_access_limit = 5;
 	modbusSetting.sendHandler = OutputData_slave;
 	ModBus_setup(&modBus_slave_test, modbusSetting);

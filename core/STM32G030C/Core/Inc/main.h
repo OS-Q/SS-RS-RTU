@@ -61,7 +61,7 @@ void Error_Handler(void);
 #define LED_Pin GPIO_PIN_4
 #define LED_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
-
+extern volatile uint32_t g_ticks;
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
